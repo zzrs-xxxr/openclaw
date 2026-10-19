@@ -29,6 +29,7 @@ async function withAdminTool(
   payload: Record<string, unknown> | undefined,
   run: (tool: ReturnType<typeof createCronTool>, calls: Array<[string, unknown]>) => Promise<void>,
   storedJob?: Record<string, unknown>,
+  readOnly = false,
 ) {
   const runId = "admin-management-tool-run";
   const sessionKey = "agent:main:control-ui";
@@ -69,6 +70,7 @@ async function withAdminTool(
       withGatewayToolCallerIdentity({ ...identity, approvalAuthority: authority }, async () => {
         const options = {
           runId,
+          readOnly,
           agentSessionKey: sessionKey,
           resolveCreatorToolAuthority,
         };
@@ -150,6 +152,63 @@ it("requires stream exec authority for management-grant activation", async () =>
     },
   );
 });
+
+it.each([false, true])(
+  "keeps management authority intersected with readOnly=%s",
+  async (readOnly) => {
+    await withAdminTool(
+      "unknown",
+      undefined,
+      async (tool, calls) => {
+        const actions = readOnly ? ["list", "get"] : ["list", "get", "update", "run", "remove"];
+        expect(tool.parameters).toHaveProperty("properties.action.enum", actions);
+        for (const key of ["in", "text", "mode", "contextMessages", "sessionKey"]) {
+          expect(tool.parameters).not.toHaveProperty(`properties.${key}`);
+        }
+        if (readOnly) {
+          expect(tool.parameters).not.toHaveProperty("properties.job");
+        } else {
+          expect(tool.parameters).not.toHaveProperty("properties.job.properties.declarationKey");
+          expect(tool.parameters).toHaveProperty("properties.job.properties.agentId");
+        }
+        for (const includeDisabled of [false, true]) {
+          const result = await tool.execute("manager-inventory", {
+            action: "list",
+            includeDisabled,
+          });
+          expect(result.details).toMatchObject({
+            scope: "gateway",
+            includeDisabled,
+            inventoryHint: expect.stringContaining("Absence does not prove deletion"),
+          });
+        }
+        expect((await tool.execute("manager-get", { action: "get", jobId })).details).toMatchObject(
+          { id: jobId },
+        );
+        if (readOnly) {
+          // Read-only availability must not grant reads absent from the management entitlement.
+          for (const action of ["status", "runs"]) {
+            await expect(tool.execute(`manager-${action}`, { action, jobId })).rejects.toThrow(
+              action === "status"
+                ? "read-only during recovery"
+                : "can only list, get, update, run, or remove automations",
+            );
+          }
+          await expect(tool.execute("manager-remove", { action: "remove", jobId })).rejects.toThrow(
+            /read-only/i,
+          );
+        }
+        expect(calls).toEqual([
+          ["cron.list", { includeDisabled: false, compact: true }],
+          ["cron.list", { includeDisabled: true, compact: true }],
+          ["cron.get", { id: jobId }],
+        ]);
+      },
+      undefined,
+      readOnly,
+    );
+  },
+);
 
 it("visibly refuses unsupported next_check", async () => {
   await withAdminTool("unknown", undefined, async (tool, calls) => {
