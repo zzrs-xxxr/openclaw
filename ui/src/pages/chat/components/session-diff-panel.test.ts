@@ -165,9 +165,9 @@ describe("SessionDiffPanel", () => {
     if (saved) {
       localStorage.setItem(key, JSON.stringify(saved));
     }
-    const panel = mountPanel();
-    panel.mobile = false;
-    panel.loader = async () => fileResult("@@ -1 +1 @@\n-before\n+after");
+    const { panel, update } = mountPanel();
+    update({ mobile: false });
+    update({ loader: async () => fileResult("@@ -1 +1 @@\n-before\n+after") });
     await settlePanel(panel);
     expect(
       panel.querySelector(`button[aria-label="Diff mode: ${mode}. Switch to next mode"]`),
@@ -355,7 +355,6 @@ describe("SessionDiffPanel", () => {
     expect(panel.textContent).not.toContain("No changes in this session");
     expect(panel.querySelector(".session-diff__toolbar-button")).toBeNull();
     panel.querySelector<HTMLButtonElement>(".session-diff__file-menu")?.click();
-
     flush();
     expect(panel.querySelector("openclaw-session-diff-menu")?.textContent).not.toContain(
       "Open in Editor",
@@ -385,7 +384,6 @@ describe("SessionDiffPanel", () => {
     const replacement = deferred<SessionsDiffResult>();
     update({ owner: { agentId: "main", sessionKey: "another-session" } });
     update({ loader: () => replacement.promise });
-
     flush();
     expect(panel.querySelector("openclaw-panel-loading-skeleton")?.variant).toBe("review");
     expect(panel.textContent).not.toContain("feature/pending");
@@ -460,7 +458,6 @@ describe("SessionDiffPanel", () => {
     const data = fileResult(patch);
     data.files[0]!.path = "example.ts";
     update({ loader: async () => data });
-
     flush();
     await vi.dynamicImportSettled();
     await waitForSolid(() =>
@@ -507,7 +504,6 @@ describe("SessionDiffPanel", () => {
       status: "renamed",
     };
     update({ loader: async () => data });
-
     flush();
     await vi.dynamicImportSettled();
 
@@ -549,7 +545,6 @@ describe("SessionDiffPanel", () => {
         surface === "file" ? ".session-diff__file-menu" : ".session-diff__toolbar-button";
       await waitForSolid(() => expect(panel.querySelector(triggerSelector)).not.toBeNull());
       panel.querySelector<HTMLButtonElement>(triggerSelector)?.click();
-
       flush();
 
       const menu = panel.querySelector("openclaw-session-diff-menu");
@@ -598,7 +593,6 @@ describe("SessionDiffPanel", () => {
       expect(panel.querySelector(".session-diff__file-menu")).not.toBeNull(),
     );
     panel.querySelector<HTMLButtonElement>(".session-diff__file-menu")?.click();
-
     flush();
 
     const menu = panel.querySelector("openclaw-session-diff-menu");
@@ -657,14 +651,12 @@ describe("SessionDiffPanel", () => {
       expect(panel.querySelector(".session-diff__file-menu")).not.toBeNull(),
     );
     panel.querySelector<HTMLButtonElement>(".session-diff__file-menu")?.click();
-
     flush();
     expect(panel.querySelector("openclaw-session-diff-menu")?.textContent).toContain(
       "Open in Editor",
     );
 
     setNativeGatewayTestState("remote");
-
     flush();
 
     expect(panel.querySelector("openclaw-session-diff-menu")).toBeNull();
@@ -686,7 +678,6 @@ describe("SessionDiffPanel", () => {
     second.resolve(result("feature/latest"));
     await waitForSolid(() => expect(panel.textContent).toContain("feature/latest"));
     first.resolve(result("feature/stale"));
-
     flush();
 
     expect(panel.textContent).toContain("feature/latest");
