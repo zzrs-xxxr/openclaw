@@ -11,6 +11,7 @@ import { runQaGatewayFixture } from "../../../test/helpers/qa-gateway-cleanup.js
 import { captureRuntimeConfigAsyncReader } from "../../config/config.js";
 import type { CronJob } from "../../cron/types.js";
 import type { AgentRuntimeIdentity } from "../../gateway/agent-runtime-identity-token.js";
+import { buildMockOpenAiResponsesProvider } from "../../gateway/test-openai-responses-model.js";
 import {
   claimAgentRunDelegatedAuthority,
   releaseAgentRunDelegatedAuthority,
@@ -188,12 +189,23 @@ function seedRestartExhaustedStream(instance: OpenClawTestInstance, jobId: strin
 
 describe("cron stream agent authority final effects", () => {
   it("proves allowed, forbidden, activation, and stale authority through a real Gateway process", async () => {
+    // The source emits no events; this configured route only satisfies cron admission.
+    const model = buildMockOpenAiResponsesProvider("http://127.0.0.1:1/v1", "stream-authority");
     const instance = await createOpenClawTestInstance({
       name: "cron-stream-agent-authority",
       env: { OPENCLAW_SKIP_CRON: undefined },
       config: {
         gateway: { mode: "local" },
-        agents: { defaults: { skipBootstrap: true, sandbox: { mode: "off" } } },
+        agents: {
+          defaults: {
+            model: { primary: model.modelRef },
+            modelPolicy: { allow: [model.modelRef] },
+            models: { [model.modelRef]: { agentRuntime: { id: "openclaw" } } },
+            skipBootstrap: true,
+            sandbox: { mode: "off" },
+          },
+        },
+        models: { mode: "replace", providers: { [model.providerId]: model.config } },
         cron: { enabled: true, triggers: { enabled: true } },
       },
     });
