@@ -77,13 +77,13 @@ var isChatHistoryState = /* @__PURE__ */ (() => {
       !Array.isArray(value) &&
       "stateRevision" in value &&
       Object.getOwnPropertyNames(value).every(
-        (var_102, var_103) => External[0].test(var_102) || !1,
+        (var_106, var_107) => External[0].test(var_106) || !1,
       ) &&
       typeof value.stateRevision == "object" &&
       value.stateRevision !== null &&
       !Array.isArray(value.stateRevision) &&
       Object.getOwnPropertyNames(value.stateRevision).every(
-        (var_104, var_105) => External[1].test(var_104) || !1,
+        (var_108, var_109) => External[1].test(var_108) || !1,
       ) &&
       (value.stateRevision.pendingInputs === void 0 ||
         !("pendingInputs" in value.stateRevision) ||
@@ -120,7 +120,7 @@ var isChatHistoryState = /* @__PURE__ */ (() => {
           "items" in value.pendingInputs &&
           "total" in value.pendingInputs &&
           Object.getOwnPropertyNames(value.pendingInputs).every(
-            (var_106, var_107) => External[2].test(var_106) || !1,
+            (var_110, var_111) => External[2].test(var_110) || !1,
           ) &&
           Array.isArray(value.pendingInputs.items) &&
           value.pendingInputs.items.every(
@@ -133,7 +133,7 @@ var isChatHistoryState = /* @__PURE__ */ (() => {
               "acceptedAt" in element &&
               "state" in element &&
               Object.getOwnPropertyNames(element).every(
-                (var_108, var_109) => External[3].test(var_108) || !1,
+                (var_112, var_113) => External[3].test(var_112) || !1,
               ) &&
               typeof element.id == "string" &&
               (element.id.length >= 2 ||
@@ -332,7 +332,7 @@ var isChatHistoryState = /* @__PURE__ */ (() => {
               !Array.isArray(value.sessionInfo.activitySummary) &&
               "state" in value.sessionInfo.activitySummary &&
               Object.getOwnPropertyNames(value.sessionInfo.activitySummary).every(
-                (var_110, var_111) => External[4].test(var_110) || !1,
+                (var_114, var_115) => External[4].test(var_114) || !1,
               ) &&
               (value.sessionInfo.activitySummary.canEnsure === void 0 ||
                 !("canEnsure" in value.sessionInfo.activitySummary) ||
@@ -388,7 +388,7 @@ var isChatHistoryState = /* @__PURE__ */ (() => {
               !Array.isArray(value.sessionInfo.archivedBy) &&
               "type" in value.sessionInfo.archivedBy &&
               Object.getOwnPropertyNames(value.sessionInfo.archivedBy).every(
-                (var_112, var_113) => External[5].test(var_112) || !1,
+                (var_116, var_117) => External[5].test(var_116) || !1,
               ) &&
               ((typeof value.sessionInfo.archivedBy.type == "string" &&
                 value.sessionInfo.archivedBy.type === "human") ||
@@ -584,7 +584,7 @@ var isChatHistoryState = /* @__PURE__ */ (() => {
               "runId" in value.sessionInfo.providerReview &&
               "canContinue" in value.sessionInfo.providerReview &&
               Object.getOwnPropertyNames(value.sessionInfo.providerReview).every(
-                (var_114, var_115) => External[6].test(var_114) || !1,
+                (var_118, var_119) => External[6].test(var_118) || !1,
               ) &&
               typeof value.sessionInfo.providerReview.id == "string" &&
               (value.sessionInfo.providerReview.id.length >= 2 ||
@@ -700,7 +700,7 @@ var isChatHistoryState = /* @__PURE__ */ (() => {
                   "done" in element &&
                   "failed" in element &&
                   Object.getOwnPropertyNames(element).every(
-                    (var_116, var_117) => External[7].test(var_116) || !1,
+                    (var_120, var_121) => External[7].test(var_120) || !1,
                   ) &&
                   typeof element.groupId == "string" &&
                   (element.groupId.length >= 2 ||
@@ -792,7 +792,7 @@ var isChatHistoryState = /* @__PURE__ */ (() => {
               "url" in value.sessionInfo.repository &&
               "branch" in value.sessionInfo.repository &&
               Object.getOwnPropertyNames(value.sessionInfo.repository).every(
-                (var_118, var_119) => External[8].test(var_118) || !1,
+                (var_122, var_123) => External[8].test(var_122) || !1,
               ) &&
               typeof value.sessionInfo.repository.url == "string" &&
               (value.sessionInfo.repository.url.length >= 2 ||
@@ -848,7 +848,7 @@ var isChatHistoryState = /* @__PURE__ */ (() => {
               value.sessionInfo.communication !== null &&
               !Array.isArray(value.sessionInfo.communication) &&
               Object.getOwnPropertyNames(value.sessionInfo.communication).every(
-                (var_120, var_121) => External[9].test(var_120) || !1,
+                (var_124, var_125) => External[9].test(var_124) || !1,
               ) &&
               (value.sessionInfo.communication.send === void 0 ||
                 !("send" in value.sessionInfo.communication) ||
@@ -931,7 +931,7 @@ var isChatHistoryState = /* @__PURE__ */ (() => {
               !Array.isArray(value.sessionInfo.createdActor) &&
               "type" in value.sessionInfo.createdActor &&
               Object.getOwnPropertyNames(value.sessionInfo.createdActor).every(
-                (var_122, var_123) => External[10].test(var_122) || !1,
+                (var_126, var_127) => External[10].test(var_126) || !1,
               ) &&
               ((typeof value.sessionInfo.createdActor.type == "string" &&
                 value.sessionInfo.createdActor.type === "human") ||
@@ -1068,14 +1068,14 @@ var isChatHistoryState = /* @__PURE__ */ (() => {
               !Array.isArray(value.sessionInfo.owner) &&
               "actor" in value.sessionInfo.owner &&
               Object.getOwnPropertyNames(value.sessionInfo.owner).every(
-                (var_124, var_125) => External[11].test(var_124) || !1,
+                (var_128, var_129) => External[11].test(var_128) || !1,
               ) &&
               typeof value.sessionInfo.owner.actor == "object" &&
               value.sessionInfo.owner.actor !== null &&
               !Array.isArray(value.sessionInfo.owner.actor) &&
               "type" in value.sessionInfo.owner.actor &&
               Object.getOwnPropertyNames(value.sessionInfo.owner.actor).every(
-                (var_126, var_127) => External[12].test(var_126) || !1,
+                (var_130, var_131) => External[12].test(var_130) || !1,
               ) &&
               ((typeof value.sessionInfo.owner.actor.type == "string" &&
                 value.sessionInfo.owner.actor.type === "human") ||
@@ -1206,7 +1206,7 @@ var isChatHistoryState = /* @__PURE__ */ (() => {
                   !Array.isArray(value.sessionInfo.owner.assignedBy) &&
                   "type" in value.sessionInfo.owner.assignedBy &&
                   Object.getOwnPropertyNames(value.sessionInfo.owner.assignedBy).every(
-                    (var_128, var_129) => External[13].test(var_128) || !1,
+                    (var_132, var_133) => External[13].test(var_132) || !1,
                   ) &&
                   ((typeof value.sessionInfo.owner.assignedBy.type == "string" &&
                     value.sessionInfo.owner.assignedBy.type === "human") ||
@@ -1357,7 +1357,7 @@ var isChatHistoryState = /* @__PURE__ */ (() => {
                   !Array.isArray(element) &&
                   "identity" in element &&
                   Object.getOwnPropertyNames(element).every(
-                    (var_130, var_131) => External[14].test(var_130) || !1,
+                    (var_134, var_135) => External[14].test(var_134) || !1,
                   ) &&
                   ((typeof element.identity == "object" &&
                     element.identity !== null &&
@@ -1478,7 +1478,7 @@ var isChatHistoryState = /* @__PURE__ */ (() => {
                   !Array.isArray(element) &&
                   "identity" in element &&
                   Object.getOwnPropertyNames(element).every(
-                    (var_132, var_133) => External[15].test(var_132) || !1,
+                    (var_136, var_137) => External[15].test(var_136) || !1,
                   ) &&
                   ((typeof element.identity == "object" &&
                     element.identity !== null &&
@@ -1697,7 +1697,7 @@ var isChatHistoryState = /* @__PURE__ */ (() => {
               value.sessionInfo.toolOverrides !== null &&
               !Array.isArray(value.sessionInfo.toolOverrides) &&
               Object.getOwnPropertyNames(value.sessionInfo.toolOverrides).every(
-                (var_134, var_135) => External[16].test(var_134) || !1,
+                (var_138, var_139) => External[16].test(var_138) || !1,
               ) &&
               (value.sessionInfo.toolOverrides.mcpServers === void 0 ||
                 !("mcpServers" in value.sessionInfo.toolOverrides) ||
@@ -1705,8 +1705,8 @@ var isChatHistoryState = /* @__PURE__ */ (() => {
                   value.sessionInfo.toolOverrides.mcpServers !== null &&
                   !Array.isArray(value.sessionInfo.toolOverrides.mcpServers) &&
                   Object.entries(value.sessionInfo.toolOverrides.mcpServers).every(
-                    ([var_136, var_137], _) =>
-                      !External[17].test(var_136) || typeof var_137 == "boolean",
+                    ([var_140, var_141], _) =>
+                      !External[17].test(var_140) || typeof var_141 == "boolean",
                   ))) &&
               (value.sessionInfo.toolOverrides.mcpToolsDeny === void 0 ||
                 !("mcpToolsDeny" in value.sessionInfo.toolOverrides) ||
@@ -1714,10 +1714,10 @@ var isChatHistoryState = /* @__PURE__ */ (() => {
                   value.sessionInfo.toolOverrides.mcpToolsDeny !== null &&
                   !Array.isArray(value.sessionInfo.toolOverrides.mcpToolsDeny) &&
                   Object.entries(value.sessionInfo.toolOverrides.mcpToolsDeny).every(
-                    ([var_138, var_139], _) =>
-                      !External[18].test(var_138) ||
-                      (Array.isArray(var_139) &&
-                        var_139.every(
+                    ([var_142, var_143], _) =>
+                      !External[18].test(var_142) ||
+                      (Array.isArray(var_143) &&
+                        var_143.every(
                           (element, index) =>
                             typeof element == "string" &&
                             (element.length >= 2 ||
@@ -1730,8 +1730,8 @@ var isChatHistoryState = /* @__PURE__ */ (() => {
                   value.sessionInfo.toolOverrides.skills !== null &&
                   !Array.isArray(value.sessionInfo.toolOverrides.skills) &&
                   Object.entries(value.sessionInfo.toolOverrides.skills).every(
-                    ([var_140, var_141], _) =>
-                      !External[19].test(var_140) || typeof var_141 == "boolean",
+                    ([var_144, var_145], _) =>
+                      !External[19].test(var_144) || typeof var_145 == "boolean",
                   ))) &&
               (value.sessionInfo.toolOverrides.webSearch === void 0 ||
                 !("webSearch" in value.sessionInfo.toolOverrides) ||
@@ -1750,7 +1750,7 @@ var isChatHistoryState = /* @__PURE__ */ (() => {
               "scope" in element &&
               "acceptsArgs" in element &&
               Object.getOwnPropertyNames(element).every(
-                (var_142, var_143) => External[20].test(var_142) || !1,
+                (var_146, var_147) => External[20].test(var_146) || !1,
               ) &&
               typeof element.name == "string" &&
               (element.name.length >= 2 ||
@@ -1820,7 +1820,7 @@ var isChatHistoryState = /* @__PURE__ */ (() => {
                       "description" in element2 &&
                       "type" in element2 &&
                       Object.getOwnPropertyNames(element2).every(
-                        (var_144, var_145) => External[21].test(var_144) || !1,
+                        (var_148, var_149) => External[21].test(var_148) || !1,
                       ) &&
                       typeof element2.name == "string" &&
                       (element2.name.length >= 2 ||

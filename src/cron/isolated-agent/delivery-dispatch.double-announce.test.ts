@@ -240,7 +240,7 @@ function expectSessionDeleted() {
       expectedLifecycleRevision: "test-lifecycle-revision",
       expectedSessionUpdatedAt: 1_000,
     },
-    timeoutMs: 10_000,
+    timeoutMs: null,
   });
 }
 

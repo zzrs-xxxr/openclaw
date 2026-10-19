@@ -571,9 +571,10 @@ var isSessionApprovalEvent = /* @__PURE__ */ (() => {
           "u",
         ),
         new RegExp(
-          "(^kind$|^commandText$|^commandPreview$|^warningText$|^host$|^nodeId$|^agentId$|^scope$|^allowedDecisions$)",
+          "(^kind$|^commandText$|^commandPreview$|^warningText$|^streamProposal$|^host$|^nodeId$|^agentId$|^scope$|^allowedDecisions$)",
           "u",
         ),
+        new RegExp("(^jobId$|^name$|^operation$)", "u"),
         new RegExp("(^kind$|^target$|^recipientCount$|^recipients$|^audience$)", "u"),
         new RegExp("(^kind$|^amount$|^currency$|^target$)", "u"),
         new RegExp("(^kind$|^target$|^visibility$)", "u"),
@@ -609,7 +610,7 @@ var isSessionApprovalEvent = /* @__PURE__ */ (() => {
         ),
       ],
       check_0 = (value) => check_1(value),
-      check_1 = (value) => check_2(value) || check_59(value),
+      check_1 = (value) => check_2(value) || check_63(value),
       check_2 = (value) =>
         typeof value == "object" &&
         value !== null &&
@@ -662,7 +663,7 @@ var isSessionApprovalEvent = /* @__PURE__ */ (() => {
         typeof value == "string" &&
         (value.length >= 2 || (value.length >= 1 && CodePointCount2(value) >= 1)) &&
         External[2].test(value),
-      check_9 = (value) => check_10(value) || check_43(value) || check_55(value),
+      check_9 = (value) => check_10(value) || check_47(value) || check_59(value),
       check_10 = (value) =>
         typeof value == "object" &&
         value !== null &&
@@ -681,19 +682,38 @@ var isSessionApprovalEvent = /* @__PURE__ */ (() => {
         (value.warningText === void 0 ||
           !("warningText" in value) ||
           check_12(value.warningText)) &&
+        (value.streamProposal === void 0 ||
+          !("streamProposal" in value) ||
+          check_15(value.streamProposal)) &&
         (value.host === void 0 || !("host" in value) || check_12(value.host)) &&
-        (value.nodeId === void 0 || !("nodeId" in value) || check_15(value.nodeId)) &&
-        (value.agentId === void 0 || !("agentId" in value) || check_15(value.agentId)) &&
-        (value.scope === void 0 || !("scope" in value) || check_16(value.scope)) &&
-        check_38(value.allowedDecisions),
+        (value.nodeId === void 0 || !("nodeId" in value) || check_19(value.nodeId)) &&
+        (value.agentId === void 0 || !("agentId" in value) || check_19(value.agentId)) &&
+        (value.scope === void 0 || !("scope" in value) || check_20(value.scope)) &&
+        check_42(value.allowedDecisions),
       check_11 = (value) => typeof value == "string" && value === "exec",
       check_12 = (value) => check_13(value) || check_14(value),
       check_13 = (value) => typeof value == "string",
       check_14 = (value) => value === null,
-      check_15 = (value) => check_4(value) || check_14(value),
-      check_16 = (value) =>
-        check_17(value) || check_25(value) || check_29(value) || check_34(value),
-      check_17 = (value) =>
+      check_15 = (value) =>
+        typeof value == "object" &&
+        value !== null &&
+        !Array.isArray(value) &&
+        "jobId" in value &&
+        "name" in value &&
+        "operation" in value &&
+        Object.getOwnPropertyNames(value).every(
+          (var_16, var_17) => External[4].test(var_16) || check_3(value[var_16]),
+        ) &&
+        check_4(value.jobId) &&
+        check_4(value.name) &&
+        check_16(value.operation),
+      check_16 = (value) => check_17(value) || check_18(value),
+      check_17 = (value) => typeof value == "string" && value === "add",
+      check_18 = (value) => typeof value == "string" && value === "update",
+      check_19 = (value) => check_4(value) || check_14(value),
+      check_20 = (value) =>
+        check_21(value) || check_29(value) || check_33(value) || check_38(value),
+      check_21 = (value) =>
         typeof value == "object" &&
         value !== null &&
         !Array.isArray(value) &&
@@ -701,29 +721,29 @@ var isSessionApprovalEvent = /* @__PURE__ */ (() => {
         "target" in value &&
         "recipientCount" in value &&
         Object.getOwnPropertyNames(value).every(
-          (var_16, var_17) => External[4].test(var_16) || check_3(value[var_16]),
+          (var_18, var_19) => External[5].test(var_18) || check_3(value[var_18]),
         ) &&
-        check_18(value.kind) &&
-        check_19(value.target) &&
-        check_20(value.recipientCount) &&
-        (value.recipients === void 0 || !("recipients" in value) || check_21(value.recipients)) &&
-        (value.audience === void 0 || !("audience" in value) || check_22(value.audience)),
-      check_18 = (value) => typeof value == "string" && value === "message-send",
-      check_19 = (value) =>
+        check_22(value.kind) &&
+        check_23(value.target) &&
+        check_24(value.recipientCount) &&
+        (value.recipients === void 0 || !("recipients" in value) || check_25(value.recipients)) &&
+        (value.audience === void 0 || !("audience" in value) || check_26(value.audience)),
+      check_22 = (value) => typeof value == "string" && value === "message-send",
+      check_23 = (value) =>
         typeof value == "string" &&
         (value.length >= 2 || (value.length >= 1 && CodePointCount2(value) >= 1)) &&
         (value.length <= 128 || (value.length <= 256 && CodePointCount2(value) <= 128)),
-      check_20 = (value) =>
+      check_24 = (value) =>
         Number.isInteger(value) &&
         (!(Number.isFinite(value) || typeof value == "bigint") || (value >= 1 && value <= 1e6)),
-      check_21 = (value) =>
-        Array.isArray(value) &&
-        value.every((element, index) => check_19(element)) &&
-        value.length <= 5,
-      check_22 = (value) => check_23(value) || check_24(value),
-      check_23 = (value) => typeof value == "string" && value === "internal",
-      check_24 = (value) => typeof value == "string" && value === "external",
       check_25 = (value) =>
+        Array.isArray(value) &&
+        value.every((element, index) => check_23(element)) &&
+        value.length <= 5,
+      check_26 = (value) => check_27(value) || check_28(value),
+      check_27 = (value) => typeof value == "string" && value === "internal",
+      check_28 = (value) => typeof value == "string" && value === "external",
+      check_29 = (value) =>
         typeof value == "object" &&
         value !== null &&
         !Array.isArray(value) &&
@@ -732,22 +752,22 @@ var isSessionApprovalEvent = /* @__PURE__ */ (() => {
         "currency" in value &&
         "target" in value &&
         Object.getOwnPropertyNames(value).every(
-          (var_18, var_19) => External[5].test(var_18) || check_3(value[var_18]),
+          (var_20, var_21) => External[6].test(var_20) || check_3(value[var_20]),
         ) &&
-        check_26(value.kind) &&
-        check_27(value.amount) &&
-        check_28(value.currency) &&
-        check_19(value.target),
-      check_26 = (value) => typeof value == "string" && value === "payment",
-      check_27 = (value) =>
+        check_30(value.kind) &&
+        check_31(value.amount) &&
+        check_32(value.currency) &&
+        check_23(value.target),
+      check_30 = (value) => typeof value == "string" && value === "payment",
+      check_31 = (value) =>
         typeof value == "string" &&
         (value.length >= 2 || (value.length >= 1 && CodePointCount2(value) >= 1)) &&
         (value.length <= 40 || (value.length <= 80 && CodePointCount2(value) <= 40)),
-      check_28 = (value) =>
+      check_32 = (value) =>
         typeof value == "string" &&
         (value.length >= 2 || (value.length >= 1 && CodePointCount2(value) >= 1)) &&
         (value.length <= 12 || (value.length <= 24 && CodePointCount2(value) <= 12)),
-      check_29 = (value) =>
+      check_33 = (value) =>
         typeof value == "object" &&
         value !== null &&
         !Array.isArray(value) &&
@@ -755,16 +775,16 @@ var isSessionApprovalEvent = /* @__PURE__ */ (() => {
         "target" in value &&
         "visibility" in value &&
         Object.getOwnPropertyNames(value).every(
-          (var_20, var_21) => External[6].test(var_20) || check_3(value[var_20]),
+          (var_22, var_23) => External[7].test(var_22) || check_3(value[var_22]),
         ) &&
-        check_30(value.kind) &&
-        check_19(value.target) &&
-        check_31(value.visibility),
-      check_30 = (value) => typeof value == "string" && value === "external-post",
-      check_31 = (value) => check_32(value) || check_33(value),
-      check_32 = (value) => typeof value == "string" && value === "public",
-      check_33 = (value) => typeof value == "string" && value === "restricted",
-      check_34 = (value) =>
+        check_34(value.kind) &&
+        check_23(value.target) &&
+        check_35(value.visibility),
+      check_34 = (value) => typeof value == "string" && value === "external-post",
+      check_35 = (value) => check_36(value) || check_37(value),
+      check_36 = (value) => typeof value == "string" && value === "public",
+      check_37 = (value) => typeof value == "string" && value === "restricted",
+      check_38 = (value) =>
         typeof value == "object" &&
         value !== null &&
         !Array.isArray(value) &&
@@ -772,35 +792,35 @@ var isSessionApprovalEvent = /* @__PURE__ */ (() => {
         "automation" in value &&
         "command" in value &&
         Object.getOwnPropertyNames(value).every(
-          (var_22, var_23) => External[7].test(var_22) || check_3(value[var_22]),
+          (var_24, var_25) => External[8].test(var_24) || check_3(value[var_24]),
         ) &&
-        check_35(value.kind) &&
-        check_19(value.automation) &&
-        check_36(value.command) &&
+        check_39(value.kind) &&
+        check_23(value.automation) &&
+        check_40(value.command) &&
         (value.expiresInDays === void 0 ||
           !("expiresInDays" in value) ||
-          check_37(value.expiresInDays)),
-      check_35 = (value) => typeof value == "string" && value === "standing-grant",
-      check_36 = (value) =>
+          check_41(value.expiresInDays)),
+      check_39 = (value) => typeof value == "string" && value === "standing-grant",
+      check_40 = (value) =>
         typeof value == "string" &&
         (value.length >= 2 || (value.length >= 1 && CodePointCount2(value) >= 1)) &&
         (value.length <= 256 || (value.length <= 512 && CodePointCount2(value) <= 256)),
-      check_37 = (value) =>
+      check_41 = (value) =>
         Number.isInteger(value) &&
         (!(Number.isFinite(value) || typeof value == "bigint") || (value >= 1 && value <= 3650)),
-      check_38 = (value) =>
+      check_42 = (value) =>
         Array.isArray(value) &&
         value.length !== 0 &&
-        value.some((var_24, _) => check_39(var_24)) &&
-        value.every((element, index) => check_40(element)) &&
+        value.some((var_26, _) => check_43(var_26)) &&
+        value.every((element, index) => check_44(element)) &&
         value.length >= 1 &&
         value.length <= 3 &&
         new Set(value.map(Hash)).size === value.length,
-      check_39 = (value) => typeof value == "string" && value === "deny",
-      check_40 = (value) => check_41(value) || check_42(value) || check_39(value),
-      check_41 = (value) => typeof value == "string" && value === "allow-once",
-      check_42 = (value) => typeof value == "string" && value === "allow-always",
-      check_43 = (value) =>
+      check_43 = (value) => typeof value == "string" && value === "deny",
+      check_44 = (value) => check_45(value) || check_46(value) || check_43(value),
+      check_45 = (value) => typeof value == "string" && value === "allow-once",
+      check_46 = (value) => typeof value == "string" && value === "allow-always",
+      check_47 = (value) =>
         typeof value == "object" &&
         value !== null &&
         !Array.isArray(value) &&
@@ -810,57 +830,57 @@ var isSessionApprovalEvent = /* @__PURE__ */ (() => {
         "severity" in value &&
         "allowedDecisions" in value &&
         Object.getOwnPropertyNames(value).every(
-          (var_25, var_26) => External[8].test(var_25) || check_3(value[var_25]),
+          (var_27, var_28) => External[9].test(var_27) || check_3(value[var_27]),
         ) &&
-        check_44(value.kind) &&
-        check_45(value.title) &&
-        check_46(value.description) &&
-        (value.detail === void 0 || !("detail" in value) || check_47(value.detail)) &&
-        check_48(value.severity) &&
-        (value.pluginId === void 0 || !("pluginId" in value) || check_15(value.pluginId)) &&
-        (value.toolName === void 0 || !("toolName" in value) || check_15(value.toolName)) &&
-        (value.agentId === void 0 || !("agentId" in value) || check_15(value.agentId)) &&
-        (value.scope === void 0 || !("scope" in value) || check_16(value.scope)) &&
-        check_38(value.allowedDecisions) &&
+        check_48(value.kind) &&
+        check_49(value.title) &&
+        check_50(value.description) &&
+        (value.detail === void 0 || !("detail" in value) || check_51(value.detail)) &&
+        check_52(value.severity) &&
+        (value.pluginId === void 0 || !("pluginId" in value) || check_19(value.pluginId)) &&
+        (value.toolName === void 0 || !("toolName" in value) || check_19(value.toolName)) &&
+        (value.agentId === void 0 || !("agentId" in value) || check_19(value.agentId)) &&
+        (value.scope === void 0 || !("scope" in value) || check_20(value.scope)) &&
+        check_42(value.allowedDecisions) &&
         (value.externalResolution === void 0 ||
           !("externalResolution" in value) ||
-          check_52(value.externalResolution)),
-      check_44 = (value) => typeof value == "string" && value === "plugin",
-      check_45 = (value) =>
+          check_56(value.externalResolution)),
+      check_48 = (value) => typeof value == "string" && value === "plugin",
+      check_49 = (value) =>
         typeof value == "string" &&
         (value.length >= 2 || (value.length >= 1 && CodePointCount2(value) >= 1)) &&
         (value.length <= 80 || (value.length <= 160 && CodePointCount2(value) <= 80)),
-      check_46 = (value) =>
+      check_50 = (value) =>
         typeof value == "string" &&
         (value.length >= 2 || (value.length >= 1 && CodePointCount2(value) >= 1)) &&
         (value.length <= 512 || (value.length <= 1024 && CodePointCount2(value) <= 512)),
-      check_47 = (value) =>
+      check_51 = (value) =>
         typeof value == "string" &&
         (value.length >= 2 || (value.length >= 1 && CodePointCount2(value) >= 1)) &&
         (value.length <= 16384 || (value.length <= 32768 && CodePointCount2(value) <= 16384)),
-      check_48 = (value) => check_49(value) || check_50(value) || check_51(value),
-      check_49 = (value) => typeof value == "string" && value === "info",
-      check_50 = (value) => typeof value == "string" && value === "warning",
-      check_51 = (value) => typeof value == "string" && value === "critical",
-      check_52 = (value) =>
+      check_52 = (value) => check_53(value) || check_54(value) || check_55(value),
+      check_53 = (value) => typeof value == "string" && value === "info",
+      check_54 = (value) => typeof value == "string" && value === "warning",
+      check_55 = (value) => typeof value == "string" && value === "critical",
+      check_56 = (value) =>
         typeof value == "object" &&
         value !== null &&
         !Array.isArray(value) &&
         "label" in value &&
         "decisions" in value &&
         Object.getOwnPropertyNames(value).every(
-          (var_27, var_28) => External[9].test(var_27) || check_3(value[var_27]),
+          (var_29, var_30) => External[10].test(var_29) || check_3(value[var_29]),
         ) &&
-        check_45(value.label) &&
-        check_53(value.decisions),
-      check_53 = (value) =>
+        check_49(value.label) &&
+        check_57(value.decisions),
+      check_57 = (value) =>
         Array.isArray(value) &&
-        value.every((element, index) => check_54(element)) &&
+        value.every((element, index) => check_58(element)) &&
         value.length >= 1 &&
         value.length <= 2 &&
         new Set(value.map(Hash)).size === value.length,
-      check_54 = (value) => check_41(value) || check_42(value),
-      check_55 = (value) =>
+      check_58 = (value) => check_45(value) || check_46(value),
+      check_59 = (value) =>
         typeof value == "object" &&
         value !== null &&
         !Array.isArray(value) &&
@@ -870,23 +890,23 @@ var isSessionApprovalEvent = /* @__PURE__ */ (() => {
         "proposalHash" in value &&
         "allowedDecisions" in value &&
         Object.getOwnPropertyNames(value).every(
-          (var_29, var_30) => External[10].test(var_29) || check_3(value[var_29]),
+          (var_31, var_32) => External[11].test(var_31) || check_3(value[var_31]),
         ) &&
-        check_56(value.kind) &&
-        check_45(value.title) &&
-        check_46(value.description) &&
-        check_57(value.proposalHash) &&
-        (value.agentId === void 0 || !("agentId" in value) || check_15(value.agentId)) &&
-        check_58(value.allowedDecisions),
-      check_56 = (value) => typeof value == "string" && value === "system-agent",
-      check_57 = (value) => typeof value == "string" && External[11].test(value),
-      check_58 = (value) =>
+        check_60(value.kind) &&
+        check_49(value.title) &&
+        check_50(value.description) &&
+        check_61(value.proposalHash) &&
+        (value.agentId === void 0 || !("agentId" in value) || check_19(value.agentId)) &&
+        check_62(value.allowedDecisions),
+      check_60 = (value) => typeof value == "string" && value === "system-agent",
+      check_61 = (value) => typeof value == "string" && External[12].test(value),
+      check_62 = (value) =>
         Array.isArray(value) &&
-        value.every((var_31, var_32) => var_32 < 2 || check_3(var_31)) &&
-        (value.length <= 0 || check_41(value[0])) &&
-        (value.length <= 1 || check_39(value[1])) &&
+        value.every((var_33, var_34) => var_34 < 2 || check_3(var_33)) &&
+        (value.length <= 0 || check_45(value[0])) &&
+        (value.length <= 1 || check_43(value[1])) &&
         value.length >= 2,
-      check_59 = (value) =>
+      check_63 = (value) =>
         typeof value == "object" &&
         value !== null &&
         !Array.isArray(value) &&
@@ -895,19 +915,19 @@ var isSessionApprovalEvent = /* @__PURE__ */ (() => {
         "phase" in value &&
         "approval" in value &&
         Object.getOwnPropertyNames(value).every(
-          (var_33, var_34) => External[12].test(var_33) || check_3(value[var_33]),
+          (var_35, var_36) => External[13].test(var_35) || check_3(value[var_35]),
         ) &&
         check_4(value.sessionKey) &&
         (value.sourceSessionKey === void 0 ||
           !("sourceSessionKey" in value) ||
           check_4(value.sourceSessionKey)) &&
         check_5(value.updatedAtMs) &&
-        check_60(value.phase) &&
-        check_61(value.approval),
-      check_60 = (value) => typeof value == "string" && value === "terminal",
-      check_61 = (value) =>
-        check_62(value) || check_73(value) || check_79(value) || check_83(value),
-      check_62 = (value) =>
+        check_64(value.phase) &&
+        check_65(value.approval),
+      check_64 = (value) => typeof value == "string" && value === "terminal",
+      check_65 = (value) =>
+        check_66(value) || check_77(value) || check_83(value) || check_87(value),
+      check_66 = (value) =>
         typeof value == "object" &&
         value !== null &&
         !Array.isArray(value) &&
@@ -921,7 +941,7 @@ var isSessionApprovalEvent = /* @__PURE__ */ (() => {
         "decision" in value &&
         "reason" in value &&
         Object.getOwnPropertyNames(value).every(
-          (var_35, var_36) => External[13].test(var_35) || check_3(value[var_35]),
+          (var_37, var_38) => External[14].test(var_37) || check_3(value[var_37]),
         ) &&
         check_8(value.id) &&
         check_4(value.urlPath) &&
@@ -929,40 +949,40 @@ var isSessionApprovalEvent = /* @__PURE__ */ (() => {
         check_5(value.expiresAtMs) &&
         check_9(value.presentation) &&
         check_5(value.resolvedAtMs) &&
-        (value.source === void 0 || !("source" in value) || check_63(value.source)) &&
-        (value.resolver === void 0 || !("resolver" in value) || check_64(value.resolver)) &&
-        check_70(value.status) &&
-        check_54(value.decision) &&
-        check_71(value.reason),
-      check_63 = (value) =>
+        (value.source === void 0 || !("source" in value) || check_67(value.source)) &&
+        (value.resolver === void 0 || !("resolver" in value) || check_68(value.resolver)) &&
+        check_74(value.status) &&
+        check_58(value.decision) &&
+        check_75(value.reason),
+      check_67 = (value) =>
         typeof value == "object" &&
         value !== null &&
         !Array.isArray(value) &&
         Object.getOwnPropertyNames(value).every(
-          (var_37, var_38) => External[14].test(var_37) || check_3(value[var_37]),
+          (var_39, var_40) => External[15].test(var_39) || check_3(value[var_39]),
         ) &&
         (value.agentId === void 0 || !("agentId" in value) || check_4(value.agentId)) &&
         (value.sessionKey === void 0 || !("sessionKey" in value) || check_4(value.sessionKey)),
-      check_64 = (value) =>
+      check_68 = (value) =>
         typeof value == "object" &&
         value !== null &&
         !Array.isArray(value) &&
         "kind" in value &&
         Object.getOwnPropertyNames(value).every(
-          (var_39, var_40) => External[15].test(var_39) || check_3(value[var_39]),
+          (var_41, var_42) => External[16].test(var_41) || check_3(value[var_41]),
         ) &&
-        check_65(value.kind) &&
+        check_69(value.kind) &&
         (value.id === void 0 || !("id" in value) || check_4(value.id)),
-      check_65 = (value) =>
-        check_66(value) || check_67(value) || check_68(value) || check_69(value),
-      check_66 = (value) => typeof value == "string" && value === "device",
-      check_67 = (value) => typeof value == "string" && value === "channel",
-      check_68 = (value) => typeof value == "string" && value === "runtime",
-      check_69 = (value) => typeof value == "string" && value === "system",
-      check_70 = (value) => typeof value == "string" && value === "allowed",
-      check_71 = (value) => check_72(value),
-      check_72 = (value) => typeof value == "string" && value === "user",
-      check_73 = (value) =>
+      check_69 = (value) =>
+        check_70(value) || check_71(value) || check_72(value) || check_73(value),
+      check_70 = (value) => typeof value == "string" && value === "device",
+      check_71 = (value) => typeof value == "string" && value === "channel",
+      check_72 = (value) => typeof value == "string" && value === "runtime",
+      check_73 = (value) => typeof value == "string" && value === "system",
+      check_74 = (value) => typeof value == "string" && value === "allowed",
+      check_75 = (value) => check_76(value),
+      check_76 = (value) => typeof value == "string" && value === "user",
+      check_77 = (value) =>
         typeof value == "object" &&
         value !== null &&
         !Array.isArray(value) &&
@@ -974,38 +994,6 @@ var isSessionApprovalEvent = /* @__PURE__ */ (() => {
         "resolvedAtMs" in value &&
         "status" in value &&
         "decision" in value &&
-        "reason" in value &&
-        Object.getOwnPropertyNames(value).every(
-          (var_41, var_42) => External[16].test(var_41) || check_3(value[var_41]),
-        ) &&
-        check_8(value.id) &&
-        check_4(value.urlPath) &&
-        check_5(value.createdAtMs) &&
-        check_5(value.expiresAtMs) &&
-        check_9(value.presentation) &&
-        check_5(value.resolvedAtMs) &&
-        (value.source === void 0 || !("source" in value) || check_63(value.source)) &&
-        (value.resolver === void 0 || !("resolver" in value) || check_64(value.resolver)) &&
-        check_74(value.status) &&
-        check_39(value.decision) &&
-        check_75(value.reason),
-      check_74 = (value) => typeof value == "string" && value === "denied",
-      check_75 = (value) =>
-        check_72(value) || check_76(value) || check_77(value) || check_78(value),
-      check_76 = (value) => typeof value == "string" && value === "malformed-verdict",
-      check_77 = (value) => typeof value == "string" && value === "no-route",
-      check_78 = (value) => typeof value == "string" && value === "storage-corrupt",
-      check_79 = (value) =>
-        typeof value == "object" &&
-        value !== null &&
-        !Array.isArray(value) &&
-        "id" in value &&
-        "urlPath" in value &&
-        "createdAtMs" in value &&
-        "expiresAtMs" in value &&
-        "presentation" in value &&
-        "resolvedAtMs" in value &&
-        "status" in value &&
         "reason" in value &&
         Object.getOwnPropertyNames(value).every(
           (var_43, var_44) => External[17].test(var_43) || check_3(value[var_43]),
@@ -1016,13 +1004,17 @@ var isSessionApprovalEvent = /* @__PURE__ */ (() => {
         check_5(value.expiresAtMs) &&
         check_9(value.presentation) &&
         check_5(value.resolvedAtMs) &&
-        (value.source === void 0 || !("source" in value) || check_63(value.source)) &&
-        (value.resolver === void 0 || !("resolver" in value) || check_64(value.resolver)) &&
-        check_80(value.status) &&
-        check_81(value.reason),
-      check_80 = (value) => typeof value == "string" && value === "expired",
-      check_81 = (value) => check_82(value),
-      check_82 = (value) => typeof value == "string" && value === "timeout",
+        (value.source === void 0 || !("source" in value) || check_67(value.source)) &&
+        (value.resolver === void 0 || !("resolver" in value) || check_68(value.resolver)) &&
+        check_78(value.status) &&
+        check_43(value.decision) &&
+        check_79(value.reason),
+      check_78 = (value) => typeof value == "string" && value === "denied",
+      check_79 = (value) =>
+        check_76(value) || check_80(value) || check_81(value) || check_82(value),
+      check_80 = (value) => typeof value == "string" && value === "malformed-verdict",
+      check_81 = (value) => typeof value == "string" && value === "no-route",
+      check_82 = (value) => typeof value == "string" && value === "storage-corrupt",
       check_83 = (value) =>
         typeof value == "object" &&
         value !== null &&
@@ -1044,14 +1036,42 @@ var isSessionApprovalEvent = /* @__PURE__ */ (() => {
         check_5(value.expiresAtMs) &&
         check_9(value.presentation) &&
         check_5(value.resolvedAtMs) &&
-        (value.source === void 0 || !("source" in value) || check_63(value.source)) &&
-        (value.resolver === void 0 || !("resolver" in value) || check_64(value.resolver)) &&
+        (value.source === void 0 || !("source" in value) || check_67(value.source)) &&
+        (value.resolver === void 0 || !("resolver" in value) || check_68(value.resolver)) &&
         check_84(value.status) &&
         check_85(value.reason),
-      check_84 = (value) => typeof value == "string" && value === "cancelled",
-      check_85 = (value) => check_86(value) || check_87(value),
-      check_86 = (value) => typeof value == "string" && value === "run-aborted",
-      check_87 = (value) => typeof value == "string" && value === "gateway-restart";
+      check_84 = (value) => typeof value == "string" && value === "expired",
+      check_85 = (value) => check_86(value),
+      check_86 = (value) => typeof value == "string" && value === "timeout",
+      check_87 = (value) =>
+        typeof value == "object" &&
+        value !== null &&
+        !Array.isArray(value) &&
+        "id" in value &&
+        "urlPath" in value &&
+        "createdAtMs" in value &&
+        "expiresAtMs" in value &&
+        "presentation" in value &&
+        "resolvedAtMs" in value &&
+        "status" in value &&
+        "reason" in value &&
+        Object.getOwnPropertyNames(value).every(
+          (var_47, var_48) => External[19].test(var_47) || check_3(value[var_47]),
+        ) &&
+        check_8(value.id) &&
+        check_4(value.urlPath) &&
+        check_5(value.createdAtMs) &&
+        check_5(value.expiresAtMs) &&
+        check_9(value.presentation) &&
+        check_5(value.resolvedAtMs) &&
+        (value.source === void 0 || !("source" in value) || check_67(value.source)) &&
+        (value.resolver === void 0 || !("resolver" in value) || check_68(value.resolver)) &&
+        check_88(value.status) &&
+        check_89(value.reason),
+      check_88 = (value) => typeof value == "string" && value === "cancelled",
+      check_89 = (value) => check_90(value) || check_91(value),
+      check_90 = (value) => typeof value == "string" && value === "run-aborted",
+      check_91 = (value) => typeof value == "string" && value === "gateway-restart";
     return (value) => check_0(value);
   })(),
   isSessionApprovalReplay = /* @__PURE__ */ (() => {
@@ -1066,9 +1086,10 @@ var isSessionApprovalEvent = /* @__PURE__ */ (() => {
           "u",
         ),
         new RegExp(
-          "(^kind$|^commandText$|^commandPreview$|^warningText$|^host$|^nodeId$|^agentId$|^scope$|^allowedDecisions$)",
+          "(^kind$|^commandText$|^commandPreview$|^warningText$|^streamProposal$|^host$|^nodeId$|^agentId$|^scope$|^allowedDecisions$)",
           "u",
         ),
+        new RegExp("(^jobId$|^name$|^operation$)", "u"),
         new RegExp("(^kind$|^target$|^recipientCount$|^recipients$|^audience$)", "u"),
         new RegExp("(^kind$|^amount$|^currency$|^target$)", "u"),
         new RegExp("(^kind$|^target$|^visibility$)", "u"),
@@ -1094,12 +1115,12 @@ var isSessionApprovalEvent = /* @__PURE__ */ (() => {
         "approvals" in value &&
         "truncated" in value &&
         Object.getOwnPropertyNames(value).every(
-          (var_47, var_48) => External[0].test(var_47) || check_2(value[var_47]),
+          (var_49, var_50) => External[0].test(var_49) || check_2(value[var_49]),
         ) &&
         check_3(value.sessionKey) &&
         check_4(value.updatedAtMs) &&
         check_5(value.approvals) &&
-        check_59(value.truncated),
+        check_63(value.truncated),
       check_2 = (value) => !1,
       check_3 = (value) =>
         typeof value == "string" &&
@@ -1120,14 +1141,14 @@ var isSessionApprovalEvent = /* @__PURE__ */ (() => {
         "presentation" in value &&
         "status" in value &&
         Object.getOwnPropertyNames(value).every(
-          (var_49, var_50) => External[1].test(var_49) || check_2(value[var_49]),
+          (var_51, var_52) => External[1].test(var_51) || check_2(value[var_51]),
         ) &&
         check_7(value.id) &&
         check_3(value.urlPath) &&
         check_4(value.createdAtMs) &&
         check_4(value.expiresAtMs) &&
         check_8(value.presentation) &&
-        check_58(value.status) &&
+        check_62(value.status) &&
         (value.sourceSessionKey === void 0 ||
           !("sourceSessionKey" in value) ||
           check_3(value.sourceSessionKey)),
@@ -1135,7 +1156,7 @@ var isSessionApprovalEvent = /* @__PURE__ */ (() => {
         typeof value == "string" &&
         (value.length >= 2 || (value.length >= 1 && CodePointCount2(value) >= 1)) &&
         External[2].test(value),
-      check_8 = (value) => check_9(value) || check_42(value) || check_54(value),
+      check_8 = (value) => check_9(value) || check_46(value) || check_58(value),
       check_9 = (value) =>
         typeof value == "object" &&
         value !== null &&
@@ -1144,7 +1165,7 @@ var isSessionApprovalEvent = /* @__PURE__ */ (() => {
         "commandText" in value &&
         "allowedDecisions" in value &&
         Object.getOwnPropertyNames(value).every(
-          (var_51, var_52) => External[3].test(var_51) || check_2(value[var_51]),
+          (var_53, var_54) => External[3].test(var_53) || check_2(value[var_53]),
         ) &&
         check_10(value.kind) &&
         check_3(value.commandText) &&
@@ -1154,19 +1175,38 @@ var isSessionApprovalEvent = /* @__PURE__ */ (() => {
         (value.warningText === void 0 ||
           !("warningText" in value) ||
           check_11(value.warningText)) &&
+        (value.streamProposal === void 0 ||
+          !("streamProposal" in value) ||
+          check_14(value.streamProposal)) &&
         (value.host === void 0 || !("host" in value) || check_11(value.host)) &&
-        (value.nodeId === void 0 || !("nodeId" in value) || check_14(value.nodeId)) &&
-        (value.agentId === void 0 || !("agentId" in value) || check_14(value.agentId)) &&
-        (value.scope === void 0 || !("scope" in value) || check_15(value.scope)) &&
-        check_37(value.allowedDecisions),
+        (value.nodeId === void 0 || !("nodeId" in value) || check_18(value.nodeId)) &&
+        (value.agentId === void 0 || !("agentId" in value) || check_18(value.agentId)) &&
+        (value.scope === void 0 || !("scope" in value) || check_19(value.scope)) &&
+        check_41(value.allowedDecisions),
       check_10 = (value) => typeof value == "string" && value === "exec",
       check_11 = (value) => check_12(value) || check_13(value),
       check_12 = (value) => typeof value == "string",
       check_13 = (value) => value === null,
-      check_14 = (value) => check_3(value) || check_13(value),
-      check_15 = (value) =>
-        check_16(value) || check_24(value) || check_28(value) || check_33(value),
-      check_16 = (value) =>
+      check_14 = (value) =>
+        typeof value == "object" &&
+        value !== null &&
+        !Array.isArray(value) &&
+        "jobId" in value &&
+        "name" in value &&
+        "operation" in value &&
+        Object.getOwnPropertyNames(value).every(
+          (var_55, var_56) => External[4].test(var_55) || check_2(value[var_55]),
+        ) &&
+        check_3(value.jobId) &&
+        check_3(value.name) &&
+        check_15(value.operation),
+      check_15 = (value) => check_16(value) || check_17(value),
+      check_16 = (value) => typeof value == "string" && value === "add",
+      check_17 = (value) => typeof value == "string" && value === "update",
+      check_18 = (value) => check_3(value) || check_13(value),
+      check_19 = (value) =>
+        check_20(value) || check_28(value) || check_32(value) || check_37(value),
+      check_20 = (value) =>
         typeof value == "object" &&
         value !== null &&
         !Array.isArray(value) &&
@@ -1174,29 +1214,29 @@ var isSessionApprovalEvent = /* @__PURE__ */ (() => {
         "target" in value &&
         "recipientCount" in value &&
         Object.getOwnPropertyNames(value).every(
-          (var_53, var_54) => External[4].test(var_53) || check_2(value[var_53]),
+          (var_57, var_58) => External[5].test(var_57) || check_2(value[var_57]),
         ) &&
-        check_17(value.kind) &&
-        check_18(value.target) &&
-        check_19(value.recipientCount) &&
-        (value.recipients === void 0 || !("recipients" in value) || check_20(value.recipients)) &&
-        (value.audience === void 0 || !("audience" in value) || check_21(value.audience)),
-      check_17 = (value) => typeof value == "string" && value === "message-send",
-      check_18 = (value) =>
+        check_21(value.kind) &&
+        check_22(value.target) &&
+        check_23(value.recipientCount) &&
+        (value.recipients === void 0 || !("recipients" in value) || check_24(value.recipients)) &&
+        (value.audience === void 0 || !("audience" in value) || check_25(value.audience)),
+      check_21 = (value) => typeof value == "string" && value === "message-send",
+      check_22 = (value) =>
         typeof value == "string" &&
         (value.length >= 2 || (value.length >= 1 && CodePointCount2(value) >= 1)) &&
         (value.length <= 128 || (value.length <= 256 && CodePointCount2(value) <= 128)),
-      check_19 = (value) =>
+      check_23 = (value) =>
         Number.isInteger(value) &&
         (!(Number.isFinite(value) || typeof value == "bigint") || (value >= 1 && value <= 1e6)),
-      check_20 = (value) =>
-        Array.isArray(value) &&
-        value.every((element, index) => check_18(element)) &&
-        value.length <= 5,
-      check_21 = (value) => check_22(value) || check_23(value),
-      check_22 = (value) => typeof value == "string" && value === "internal",
-      check_23 = (value) => typeof value == "string" && value === "external",
       check_24 = (value) =>
+        Array.isArray(value) &&
+        value.every((element, index) => check_22(element)) &&
+        value.length <= 5,
+      check_25 = (value) => check_26(value) || check_27(value),
+      check_26 = (value) => typeof value == "string" && value === "internal",
+      check_27 = (value) => typeof value == "string" && value === "external",
+      check_28 = (value) =>
         typeof value == "object" &&
         value !== null &&
         !Array.isArray(value) &&
@@ -1205,22 +1245,22 @@ var isSessionApprovalEvent = /* @__PURE__ */ (() => {
         "currency" in value &&
         "target" in value &&
         Object.getOwnPropertyNames(value).every(
-          (var_55, var_56) => External[5].test(var_55) || check_2(value[var_55]),
+          (var_59, var_60) => External[6].test(var_59) || check_2(value[var_59]),
         ) &&
-        check_25(value.kind) &&
-        check_26(value.amount) &&
-        check_27(value.currency) &&
-        check_18(value.target),
-      check_25 = (value) => typeof value == "string" && value === "payment",
-      check_26 = (value) =>
+        check_29(value.kind) &&
+        check_30(value.amount) &&
+        check_31(value.currency) &&
+        check_22(value.target),
+      check_29 = (value) => typeof value == "string" && value === "payment",
+      check_30 = (value) =>
         typeof value == "string" &&
         (value.length >= 2 || (value.length >= 1 && CodePointCount2(value) >= 1)) &&
         (value.length <= 40 || (value.length <= 80 && CodePointCount2(value) <= 40)),
-      check_27 = (value) =>
+      check_31 = (value) =>
         typeof value == "string" &&
         (value.length >= 2 || (value.length >= 1 && CodePointCount2(value) >= 1)) &&
         (value.length <= 12 || (value.length <= 24 && CodePointCount2(value) <= 12)),
-      check_28 = (value) =>
+      check_32 = (value) =>
         typeof value == "object" &&
         value !== null &&
         !Array.isArray(value) &&
@@ -1228,16 +1268,16 @@ var isSessionApprovalEvent = /* @__PURE__ */ (() => {
         "target" in value &&
         "visibility" in value &&
         Object.getOwnPropertyNames(value).every(
-          (var_57, var_58) => External[6].test(var_57) || check_2(value[var_57]),
+          (var_61, var_62) => External[7].test(var_61) || check_2(value[var_61]),
         ) &&
-        check_29(value.kind) &&
-        check_18(value.target) &&
-        check_30(value.visibility),
-      check_29 = (value) => typeof value == "string" && value === "external-post",
-      check_30 = (value) => check_31(value) || check_32(value),
-      check_31 = (value) => typeof value == "string" && value === "public",
-      check_32 = (value) => typeof value == "string" && value === "restricted",
-      check_33 = (value) =>
+        check_33(value.kind) &&
+        check_22(value.target) &&
+        check_34(value.visibility),
+      check_33 = (value) => typeof value == "string" && value === "external-post",
+      check_34 = (value) => check_35(value) || check_36(value),
+      check_35 = (value) => typeof value == "string" && value === "public",
+      check_36 = (value) => typeof value == "string" && value === "restricted",
+      check_37 = (value) =>
         typeof value == "object" &&
         value !== null &&
         !Array.isArray(value) &&
@@ -1245,35 +1285,35 @@ var isSessionApprovalEvent = /* @__PURE__ */ (() => {
         "automation" in value &&
         "command" in value &&
         Object.getOwnPropertyNames(value).every(
-          (var_59, var_60) => External[7].test(var_59) || check_2(value[var_59]),
+          (var_63, var_64) => External[8].test(var_63) || check_2(value[var_63]),
         ) &&
-        check_34(value.kind) &&
-        check_18(value.automation) &&
-        check_35(value.command) &&
+        check_38(value.kind) &&
+        check_22(value.automation) &&
+        check_39(value.command) &&
         (value.expiresInDays === void 0 ||
           !("expiresInDays" in value) ||
-          check_36(value.expiresInDays)),
-      check_34 = (value) => typeof value == "string" && value === "standing-grant",
-      check_35 = (value) =>
+          check_40(value.expiresInDays)),
+      check_38 = (value) => typeof value == "string" && value === "standing-grant",
+      check_39 = (value) =>
         typeof value == "string" &&
         (value.length >= 2 || (value.length >= 1 && CodePointCount2(value) >= 1)) &&
         (value.length <= 256 || (value.length <= 512 && CodePointCount2(value) <= 256)),
-      check_36 = (value) =>
+      check_40 = (value) =>
         Number.isInteger(value) &&
         (!(Number.isFinite(value) || typeof value == "bigint") || (value >= 1 && value <= 3650)),
-      check_37 = (value) =>
+      check_41 = (value) =>
         Array.isArray(value) &&
         value.length !== 0 &&
-        value.some((var_61, _) => check_38(var_61)) &&
-        value.every((element, index) => check_39(element)) &&
+        value.some((var_65, _) => check_42(var_65)) &&
+        value.every((element, index) => check_43(element)) &&
         value.length >= 1 &&
         value.length <= 3 &&
         new Set(value.map(Hash)).size === value.length,
-      check_38 = (value) => typeof value == "string" && value === "deny",
-      check_39 = (value) => check_40(value) || check_41(value) || check_38(value),
-      check_40 = (value) => typeof value == "string" && value === "allow-once",
-      check_41 = (value) => typeof value == "string" && value === "allow-always",
-      check_42 = (value) =>
+      check_42 = (value) => typeof value == "string" && value === "deny",
+      check_43 = (value) => check_44(value) || check_45(value) || check_42(value),
+      check_44 = (value) => typeof value == "string" && value === "allow-once",
+      check_45 = (value) => typeof value == "string" && value === "allow-always",
+      check_46 = (value) =>
         typeof value == "object" &&
         value !== null &&
         !Array.isArray(value) &&
@@ -1283,57 +1323,57 @@ var isSessionApprovalEvent = /* @__PURE__ */ (() => {
         "severity" in value &&
         "allowedDecisions" in value &&
         Object.getOwnPropertyNames(value).every(
-          (var_62, var_63) => External[8].test(var_62) || check_2(value[var_62]),
+          (var_66, var_67) => External[9].test(var_66) || check_2(value[var_66]),
         ) &&
-        check_43(value.kind) &&
-        check_44(value.title) &&
-        check_45(value.description) &&
-        (value.detail === void 0 || !("detail" in value) || check_46(value.detail)) &&
-        check_47(value.severity) &&
-        (value.pluginId === void 0 || !("pluginId" in value) || check_14(value.pluginId)) &&
-        (value.toolName === void 0 || !("toolName" in value) || check_14(value.toolName)) &&
-        (value.agentId === void 0 || !("agentId" in value) || check_14(value.agentId)) &&
-        (value.scope === void 0 || !("scope" in value) || check_15(value.scope)) &&
-        check_37(value.allowedDecisions) &&
+        check_47(value.kind) &&
+        check_48(value.title) &&
+        check_49(value.description) &&
+        (value.detail === void 0 || !("detail" in value) || check_50(value.detail)) &&
+        check_51(value.severity) &&
+        (value.pluginId === void 0 || !("pluginId" in value) || check_18(value.pluginId)) &&
+        (value.toolName === void 0 || !("toolName" in value) || check_18(value.toolName)) &&
+        (value.agentId === void 0 || !("agentId" in value) || check_18(value.agentId)) &&
+        (value.scope === void 0 || !("scope" in value) || check_19(value.scope)) &&
+        check_41(value.allowedDecisions) &&
         (value.externalResolution === void 0 ||
           !("externalResolution" in value) ||
-          check_51(value.externalResolution)),
-      check_43 = (value) => typeof value == "string" && value === "plugin",
-      check_44 = (value) =>
+          check_55(value.externalResolution)),
+      check_47 = (value) => typeof value == "string" && value === "plugin",
+      check_48 = (value) =>
         typeof value == "string" &&
         (value.length >= 2 || (value.length >= 1 && CodePointCount2(value) >= 1)) &&
         (value.length <= 80 || (value.length <= 160 && CodePointCount2(value) <= 80)),
-      check_45 = (value) =>
+      check_49 = (value) =>
         typeof value == "string" &&
         (value.length >= 2 || (value.length >= 1 && CodePointCount2(value) >= 1)) &&
         (value.length <= 512 || (value.length <= 1024 && CodePointCount2(value) <= 512)),
-      check_46 = (value) =>
+      check_50 = (value) =>
         typeof value == "string" &&
         (value.length >= 2 || (value.length >= 1 && CodePointCount2(value) >= 1)) &&
         (value.length <= 16384 || (value.length <= 32768 && CodePointCount2(value) <= 16384)),
-      check_47 = (value) => check_48(value) || check_49(value) || check_50(value),
-      check_48 = (value) => typeof value == "string" && value === "info",
-      check_49 = (value) => typeof value == "string" && value === "warning",
-      check_50 = (value) => typeof value == "string" && value === "critical",
-      check_51 = (value) =>
+      check_51 = (value) => check_52(value) || check_53(value) || check_54(value),
+      check_52 = (value) => typeof value == "string" && value === "info",
+      check_53 = (value) => typeof value == "string" && value === "warning",
+      check_54 = (value) => typeof value == "string" && value === "critical",
+      check_55 = (value) =>
         typeof value == "object" &&
         value !== null &&
         !Array.isArray(value) &&
         "label" in value &&
         "decisions" in value &&
         Object.getOwnPropertyNames(value).every(
-          (var_64, var_65) => External[9].test(var_64) || check_2(value[var_64]),
+          (var_68, var_69) => External[10].test(var_68) || check_2(value[var_68]),
         ) &&
-        check_44(value.label) &&
-        check_52(value.decisions),
-      check_52 = (value) =>
+        check_48(value.label) &&
+        check_56(value.decisions),
+      check_56 = (value) =>
         Array.isArray(value) &&
-        value.every((element, index) => check_53(element)) &&
+        value.every((element, index) => check_57(element)) &&
         value.length >= 1 &&
         value.length <= 2 &&
         new Set(value.map(Hash)).size === value.length,
-      check_53 = (value) => check_40(value) || check_41(value),
-      check_54 = (value) =>
+      check_57 = (value) => check_44(value) || check_45(value),
+      check_58 = (value) =>
         typeof value == "object" &&
         value !== null &&
         !Array.isArray(value) &&
@@ -1343,24 +1383,24 @@ var isSessionApprovalEvent = /* @__PURE__ */ (() => {
         "proposalHash" in value &&
         "allowedDecisions" in value &&
         Object.getOwnPropertyNames(value).every(
-          (var_66, var_67) => External[10].test(var_66) || check_2(value[var_66]),
+          (var_70, var_71) => External[11].test(var_70) || check_2(value[var_70]),
         ) &&
-        check_55(value.kind) &&
-        check_44(value.title) &&
-        check_45(value.description) &&
-        check_56(value.proposalHash) &&
-        (value.agentId === void 0 || !("agentId" in value) || check_14(value.agentId)) &&
-        check_57(value.allowedDecisions),
-      check_55 = (value) => typeof value == "string" && value === "system-agent",
-      check_56 = (value) => typeof value == "string" && External[11].test(value),
-      check_57 = (value) =>
+        check_59(value.kind) &&
+        check_48(value.title) &&
+        check_49(value.description) &&
+        check_60(value.proposalHash) &&
+        (value.agentId === void 0 || !("agentId" in value) || check_18(value.agentId)) &&
+        check_61(value.allowedDecisions),
+      check_59 = (value) => typeof value == "string" && value === "system-agent",
+      check_60 = (value) => typeof value == "string" && External[12].test(value),
+      check_61 = (value) =>
         Array.isArray(value) &&
-        value.every((var_68, var_69) => var_69 < 2 || check_2(var_68)) &&
-        (value.length <= 0 || check_40(value[0])) &&
-        (value.length <= 1 || check_38(value[1])) &&
+        value.every((var_72, var_73) => var_73 < 2 || check_2(var_72)) &&
+        (value.length <= 0 || check_44(value[0])) &&
+        (value.length <= 1 || check_42(value[1])) &&
         value.length >= 2,
-      check_58 = (value) => typeof value == "string" && value === "pending",
-      check_59 = (value) => typeof value == "boolean";
+      check_62 = (value) => typeof value == "string" && value === "pending",
+      check_63 = (value) => typeof value == "boolean";
     return (value) => check_0(value);
   })();
 export { isSessionApprovalEvent, isSessionApprovalReplay };

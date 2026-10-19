@@ -402,7 +402,11 @@ export type SessionCapability = {
   ) => Promise<SessionWorkspaceSetResult | null>;
   subscribeMessages: (
     key: string,
-    options?: { agentId?: string | null; includeApprovals?: boolean; mode?: "narration" },
+    options?: {
+      agentId?: string | null;
+      includeApprovals?: boolean;
+      mode?: "narration";
+    },
   ) => Promise<SessionMessageSubscription>;
   unsubscribeMessages: (subscription: SessionMessageSubscription) => Promise<void>;
   rewind: (
