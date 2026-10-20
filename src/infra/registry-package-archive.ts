@@ -17,7 +17,6 @@ export async function fetchRegistryPackageManifest(params: {
   registryUrl: string;
   packageName: string;
   version: string;
-  timeoutMs?: number;
   signal?: AbortSignal;
 }): Promise<NpmSpecResolution & { tarball: string }> {
   try {
@@ -26,7 +25,7 @@ export async function fetchRegistryPackageManifest(params: {
       target: params.version,
       label: "npm package manifest",
       operation: "npm-registry-package-manifest",
-      bodyTimeoutMs: Math.max(1, params.timeoutMs ?? UPDATE_NETWORK_TIMEOUT_MS),
+      bodyTimeoutMs: UPDATE_NETWORK_TIMEOUT_MS,
     });
     const metadata = normalizeNpmViewMetadata(json, `${params.packageName}@${params.version}`);
     const tarball = normalizeOptionalString(asRecord(asRecord(json).dist).tarball);
@@ -44,11 +43,10 @@ export async function downloadRegistryPackageArchive(params: {
   registryUrl: string;
   integrity: string;
   cwd: string;
-  timeoutMs?: number;
   signal?: AbortSignal;
 }): Promise<string> {
   const { signal, cleanup, refresh } = buildTimeoutAbortSignal({
-    timeoutMs: Math.max(1, params.timeoutMs ?? UPDATE_NETWORK_TIMEOUT_MS),
+    timeoutMs: UPDATE_NETWORK_TIMEOUT_MS,
     signal: params.signal,
     operation: "npm-registry-package-download",
   });
